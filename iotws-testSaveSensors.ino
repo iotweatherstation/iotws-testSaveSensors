@@ -16,14 +16,14 @@ ESP8266WiFiMulti WiFiMulti;
 //Constants
 const unsigned long SEND_Timer = 5000;  //Delay between SEND updates, 5000 milliseconds
 const unsigned int SENTVARS = 4;  //Number of sensor vars sent to REST Web App, (idHome, Temp & Humid, TimeStamp)
-const char* SSIDR = "nombre-wifi"; //WiFi SSID, change nombre-wifi por la red propia
+const char* SSID = "nombre-wifi"; //WiFi SSID, change nombre-wifi por la red propia
 const char* PASSWORD = "password-wifi"; //WiFi Pass, coloque el password real
 const char* HOST = "http://iotserver1.dis.eafit.edu.co";  //REST Web Host
 
 String appName = "/weather";
 String serviceSaveSensors = "/saveSensors";  //Name of the service SAVESENSORS
 String serviceGetTime = "/getTime";  //Name of the service GETTIME
-char* propertyNames[] = {"idhome", "temp", "humid", "timestamp"}; //Vector Var names 
+char* propertyNames[] = {"idhome", "temp", "humid", "timestamp"}; //Vector Var names
 float propertyValues[SENTVARS]; //Vector for Var values
 unsigned long lastConnectionTime = 0; //Last time you connected to the server, in milliseconds
 
@@ -111,8 +111,8 @@ void setup() {
 void loop() {
 
   if (millis() - lastConnectionTime > SEND_Timer) {
-    t = 23.1; // example, replace by real var sensor
-    h = 55.0; // example, replace by real var sensor
+    float t = 23.1; // example, replace by real var sensor
+    float h = 55.0; // example, replace by real var sensor
     Serial.print(" Temperature: ");
     Serial.println(t);
     Serial.print("Humidity: ");
@@ -122,10 +122,8 @@ void loop() {
     propertyValues[1] = t;
     propertyValues[2] = h;
     propertyValues[3] = 2017; // replace by webGetTime() (string type)
-    
+
     SEND(SENTVARS, propertyNames, propertyValues);
     lastConnectionTime = millis();
   }
 }
-
-
