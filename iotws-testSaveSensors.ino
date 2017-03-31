@@ -18,7 +18,7 @@ const unsigned long SEND_Timer = 5000;  //Delay between SEND updates, 5000 milli
 const unsigned int SENTVARS = 4;  //Number of sensor vars sent to REST Web App, (idHome, Temp & Humid, TimeStamp)
 const char* SSID = "nombre-wifi"; //WiFi SSID, change nombre-wifi por la red propia
 const char* PASSWORD = "password-wifi"; //WiFi Pass, coloque el password real
-const char* HOST = "server";  //REST Web Host, replace by real server url
+const char* HOST = "http://server";  //REST Web Host, replace by real server url
 
 String appName = "/weather";
 String serviceSaveSensors = "/saveSensors";  //Name of the service SAVESENSORS
