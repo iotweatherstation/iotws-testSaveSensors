@@ -17,14 +17,14 @@ ESP8266WiFiMulti WiFiMulti;
 const unsigned long SEND_Timer = 5000;  //Delay between SEND updates, 5000 milliseconds
 const unsigned int SENTVARS = 4;  //Number of sensor vars sent to REST Web App, (idHome, Temp & Humid, TimeStamp)
 const char* SSID = "wifi-name"; //WiFi SSID, change nombre-wifi por la red propia
-const char* PASSWORD = "wifi-passwowrd"; //WiFi Pass, coloque el password real
+const char* PASSWORD = "wifi-password"; //WiFi Pass, coloque el password real
 const char* HOST = "http://server";  //REST Web Host, replace by real 'server' url
 
 String appName = "/weather";
 String serviceSaveSensors = "/saveSensors";  //Name of the service SAVESENSORS
 String serviceGetTime = "/getTime";  //Name of the service GETTIME
 char* propertyNames[] = {"idhome", "temp", "humid", "timestamp"}; //Vector Var names
-char* propertyValues[SENTVARS]; //Vector for Var values
+String propertyValues[SENTVARS]; //Vector for Var values
 unsigned long lastConnectionTime = 0; //Last time you connected to the server, in milliseconds
 
 
@@ -55,7 +55,7 @@ String webGetTime() {
 
 
 
-void SEND(int SENTVARS, char* sensorNames[], char* values[]) {
+void SEND(int SENTVARS, char* sensorNames[], String values[]) {
   // wait for WiFi connection
   if ((WiFiMulti.run() == WL_CONNECTED)) {
     HTTPClient http;
@@ -96,7 +96,7 @@ void SEND(int SENTVARS, char* sensorNames[], char* values[]) {
 
 void setup() {
 
-  Serial.begin(115200);
+  Serial.begin(9600);
 
   for (uint8_t t = 4; t > 0; t--) {
     Serial.printf("[SETUP] WAIT %d...\n", t);
@@ -118,15 +118,9 @@ void loop() {
     Serial.print("Humidity: ");
     Serial.print(h);
 
-    char t_str[10];
-    char h_str[10];
-
-    sprintf(t_str, "%f", t);
-    sprintf(h_str, "%f", h);
-    
     propertyValues[0] = "emontoya"; // replace by real idHome (string type)
-    propertyValues[1] = t_str;
-    propertyValues[2] = h_str;
+    propertyValues[1] = t;
+    propertyValues[2] = h;
     propertyValues[3] = "2017-04-01T09:00:00.0Z"; // replace by webGetTime() (string type)
 
     SEND(SENTVARS, propertyNames, propertyValues);
